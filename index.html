@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sai Sena Impex Pvt Ltd - Leading Apparel Manufacturer</title>
+    
+    <!-- Load React, ReactDOM, and Babel for in-browser JSX parsing -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         /* CSS Variables for easy color changes */
         :root {
@@ -12,6 +18,7 @@
             --dark-color: #1d2731;
             --light-bg: #f9f9f9;
             --accent-color: #d9534f;
+            --sus-bg: #e1f5fe; /* Light blue */
         }
 
         /* Reset & Base Styles */
@@ -62,12 +69,14 @@
             display: flex;
             list-style: none;
             gap: 20px;
+            flex-wrap: wrap;
         }
 
         nav ul li a {
             font-weight: 600;
             color: var(--dark-color);
             transition: color 0.3s;
+            font-size: 0.9rem;
         }
 
         nav ul li a:hover {
@@ -139,13 +148,100 @@
             color: #555;
         }
 
-        /* Products Section */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+        /* Mission & Vision Section */
+        .mv-section {
+            background-color: var(--light-bg);
         }
 
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .mv-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        .mv-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mv-card p {
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        /* Sustainability Section */
+        .sustainability-section {
+            background-color: var(--sus-bg);
+            text-align: center;
+        }
+
+        .sus-desc {
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .sus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .sus-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sus-icon {
+            background-color: #2b82d4;
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(43, 130, 212, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .sus-item:hover .sus-icon {
+            transform: translateY(-5px);
+        }
+
+        .sus-icon svg {
+            width: 45px;
+            height: 45px;
+            fill: white;
+        }
+
+        .sus-item h4 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .sus-item p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* React Products Overrides */
         .product-card {
             background: #fff;
             border-radius: 8px;
@@ -153,6 +249,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s;
             border: 1px solid #eee;
+            height: 100%;
         }
 
         .product-card:hover {
@@ -178,6 +275,63 @@
         .product-info h3 {
             color: var(--primary-color);
             margin-bottom: 10px;
+        }
+
+        /* --- BRANDS ROLLING MARQUEE CSS --- */
+        .brands-section {
+            background-color: #ffffff;
+            padding: 80px 0; /* Remove side padding so marquee touches edges */
+            overflow: hidden;
+        }
+
+        .brands-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            /* Optional: Add a subtle fade on the left and right edges */
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .brands-track {
+            display: flex;
+            width: max-content;
+            /* Adjust the "30s" to make it scroll faster or slower */
+            animation: scroll-brands 30s linear infinite; 
+        }
+
+        .brands-track:hover {
+            animation-play-state: paused;
+        }
+
+        .brand-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 50px; /* Space between logos */
+        }
+
+        .brand-item img {
+            height: 65px; /* Control logo height */
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .brand-item img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        /* Seamless loop animation */
+        @keyframes scroll-brands {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
         }
 
         /* Certifications Section */
@@ -210,96 +364,6 @@
             margin-top: 5px;
         }
 
-        /* Visiting Card Section */
-        .cards-display {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 40px;
-        }
-
-        /* Standard Visiting Card Dimension Representation */
-        .v-card {
-            width: 450px;
-            height: 260px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-            border: 1px solid #ddd;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Back Card Styling */
-        .v-card.back {
-            background: #fafafa;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #1d1d1d;
-            letter-spacing: 1px;
-        }
-
-        .card-holder {
-            margin-top: 15px;
-        }
-
-        .holder-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .holder-role {
-            font-size: 0.8rem;
-            color: #666;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .card-details {
-            font-size: 0.85rem;
-            color: #444;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .card-details a {
-            transition: color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-details a:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
-        }
-
-        .card-address {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #333;
-            max-width: 340px;
-        }
-
         /* Map & Contacts Grid */
         .contact-layout {
             display: grid;
@@ -307,7 +371,6 @@
             gap: 50px;
         }
 
-        /* Styled Map Area */
         .map-wrapper {
             background-color: #eaeaea;
             border-radius: 8px;
@@ -384,17 +447,11 @@
 
         /* Responsiveness */
         @media (max-width: 900px) {
-            .about-grid, .contact-layout {
+            .about-grid, .contact-layout, .mv-grid {
                 grid-template-columns: 1fr;
             }
             .hero h1 {
                 font-size: 2.2rem;
-            }
-            .v-card {
-                width: 100%;
-                max-width: 400px;
-                height: auto;
-                aspect-ratio: 1.73;
             }
         }
 
@@ -404,8 +461,7 @@
                 gap: 15px;
             }
             nav ul {
-                gap: 15px;
-                flex-wrap: wrap;
+                gap: 10px;
                 justify-content: center;
             }
         }
@@ -413,23 +469,22 @@
 </head>
 <body>
 
-    <!-- Header / Navigation -->
     <header>
         <div class="nav-container">
             <div class="logo-text">SAI SENA IMPEX PVT LTD</div>
             <nav>
                 <ul>
                     <li><a href="#about">About Us</a></li>
+                    <li><a href="#mission">Mission & Vision</a></li>
+                    <li><a href="#sustainability">Sustainability</a></li>
                     <li><a href="#products">Our Products</a></li>
-                    <li><a href="#certs">Certifications</a></li>
-                    <li><a href="#vcard">Visiting Card</a></li>
+                    <li><a href="#brands">Brands</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1>SAI SENA IMPEX PVT LTD</h1>
@@ -437,7 +492,7 @@
         </div>
     </section>
 
-    <!-- About Us Section -->
+    <!-- About Us -->
     <section id="about" class="section-container">
         <h2 class="section-title">About Us</h2>
         <div class="about-grid">
@@ -450,50 +505,79 @@
         </div>
     </section>
 
-    <!-- Our Products Section -->
-    <section id="products" style="background-color: var(--light-bg);">
+    <!-- Mission and Vision -->
+    <section id="mission" class="mv-section">
         <div class="section-container">
-            <h2 class="section-title">Our Products</h2>
-            <div class="products-grid">
-                
-                <!-- Knitted Garments -->
-                <div class="product-card">
-                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80');"></div>
-                    <div class="product-info">
-                        <h3>Knitted Garments</h3>
-                        <p>High-quality knitted t-shirts, polo shirts, hoodies, and activewear crafted for maximum comfort and style durability.</p>
-                    </div>
+            <h2 class="section-title">Mission & Vision</h2>
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <h3>🎯 Our Mission</h3>
+                    <p>To manufacture and deliver high-quality, sustainable apparel while fostering a safe, innovative, and empowering environment for our workforce. We are dedicated to exceeding client expectations through operational excellence and ethical manufacturing practices.</p>
                 </div>
-
-                <!-- Woven Apparel -->
-                <div class="product-card">
-                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80');"></div>
-                    <div class="product-info">
-                        <h3>Woven Apparel</h3>
-                        <p>Casual and formal woven shirts, trousers, and tailored garments styled with exact precision and fabric integrity.</p>
-                    </div>
+                <div class="mv-card">
+                    <h3>👁️ Our Vision</h3>
+                    <p>To be a globally recognized leader in garment manufacturing, setting the highest industry benchmarks in product quality, technological advancement, and environmental stewardship, ensuring a positive impact on the communities we serve.</p>
                 </div>
-
-                <!-- Baby & Kids Wear -->
-                <div class="product-card">
-                    <!-- Updated with the gorgeous summer dresses image -->
-                    <div class="product-img" style="background-image: url('https://saisenaimpex.com/static/media/pdt-kids-set1.6e050721e0d285a2d10e.png');"></div>
-                    <div class="product-info">
-                        <h3>Baby & Kids Wear</h3>
-                        <p>Ultra-soft, safe, and breathable fabric apparel, rompers, and jumpsuits specifically tailored for babies and kids.</p>
-                    </div>
-                </div>
-
-                <!-- Denim Apparel -->
-                <div class="product-card">
-                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80');"></div>
-                    <div class="product-info">
-                        <h3>Denim Apparel</h3>
-                        <p>Premium denim jeans, modern jackets, and durable shorts stitched utilizing state-of-the-art washing and sewing tools.</p>
-                    </div>
-                </div>
-
             </div>
+        </div>
+    </section>
+
+    <!-- Sustainability Section -->
+    <section id="sustainability" class="sustainability-section">
+        <div class="section-container">
+            <h2 class="section-title" style="color: var(--primary-color);">Building Sustainability for a Greener Future</h2>
+            <p class="sus-desc">
+                At Sai Sena Impex, sustainability isn’t just a goal—it’s our core value. We’re committed to minimizing our environmental impact by sourcing eco-friendly materials and implementing energy-efficient technologies. Our initiatives go beyond compliance, fostering a culture of sustainability and accountability. Together, let’s embrace sustainability as a way of life, ensuring a greener tomorrow for all.
+            </p>
+
+            <div class="sus-grid">
+                <div class="sus-item">
+                    <div class="sus-icon">
+                        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </div>
+                    <h4>Empowered Workforce</h4>
+                    <p>Safe, ethical, and empowering work environments.</p>
+                </div>
+
+                <div class="sus-item">
+                    <div class="sus-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zm0 18c-3.35 0-6-2.57-6-6.2 0-2.34 1.95-5.44 6-9.14 4.05 3.7 6 6.79 6 9.14 0 3.63-2.65 6.2-6 6.2zm1-10h-2v4H9l3 3 3-3h-2z"/></svg>
+                    </div>
+                    <h4>Water Efficiency</h4>
+                    <p>Operating a highly efficient <strong>water recycling unit</strong> to minimize waste.</p>
+                </div>
+
+                <div class="sus-item">
+                    <div class="sus-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v2a7 7 0 0 1 7 7h2a9 9 0 0 0-9-9zm-4 4.34a7 7 0 0 1 8-2.53l1.41-1.41a9 9 0 0 0-10.82 2.53l1.41 1.41zM3 12a9 9 0 0 0 9 9v-2a7 7 0 0 1-7-7H3zm4.34 4l-1.41 1.41a9 9 0 0 0 10.82 2.53l-1.41-1.41a7 7 0 0 1-8-2.53zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                    </div>
+                    <h4>Energy and Emissions</h4>
+                    <p>Powered by our state-of-the-art <strong>100% solar-powered unit</strong>.</p>
+                </div>
+
+                <div class="sus-item">
+                    <div class="sus-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
+                    </div>
+                    <h4>Chemicals and Materials</h4>
+                    <p>Eco-friendly sourcing and safe chemical management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- React Products Container -->
+    <section id="products" style="padding-top: 80px; padding-bottom: 80px;">
+        <h2 class="section-title">Our Products</h2>
+        <div id="react-products-root"></div>
+    </section>
+
+    <!-- Brands We Work With (Infinite Rolling Marquee) -->
+    <section id="brands" class="brands-section">
+        <h2 class="section-title">Brands We Work With</h2>
+        <div class="brands-marquee-container">
+            <!-- This track is dynamically populated by brands.js -->
+            <div id="brands-track" class="brands-track"></div>
         </div>
     </section>
 
@@ -518,59 +602,14 @@
         </div>
     </section>
 
-    <!-- Interactive Digital Business Cards Section -->
-    <section id="vcard" class="section-container">
-        <h2 class="section-title">Our Business Card</h2>
-        <p style="text-align: center; margin-top: -30px; margin-bottom: 40px; color: #666;">
-            All contact and address information below is interactive. Tap or long-press to save details instantly!
-        </p>
-        <div class="cards-display">
-            
-            <!-- FRONT SIDE OF BUSINESS CARD -->
-            <div class="v-card">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">SAI SENA IMPEX PVT LTD</div>
-                    </div>
-                    <div style="background: #e0e0e0; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; color: #555;">LOGO</div>
-                </div>
-                
-                <div class="card-holder">
-                    <div class="holder-name">Joseph Muthaiyan</div>
-                    <div class="holder-role">Managing Partner</div>
-                </div>
-
-                <div class="card-details">
-                    <!-- Directly clickable telephone & mail selectors -->
-                    <a href="tel:+919894813801">📞 +91-98948 13801</a>
-                    <a href="mailto:joseph@saisenaimpex.in">✉️ joseph@saisenaimpex.in</a>
-                    <a href="http://www.saisenaimpex.in" target="_blank">🌐 www.saisenaimpex.in</a>
-                </div>
-            </div>
-
-            <!-- BACK SIDE OF BUSINESS CARD -->
-            <div class="v-card back">
-                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 8px; color: var(--primary-color);">Unit - 2</div>
-                <div class="card-address">
-                    232/2b1b, Palladam Main Road,<br>
-                    Kunangalpalayam Pirivu, Karaipudur,<br>
-                    Palladam, Tiruppur - 641605
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Contact Us & Map Section -->
+    <!-- Contact Us Section -->
     <section id="contact" style="background-color: var(--light-bg);">
         <div class="section-container">
             <h2 class="section-title">Contact Us</h2>
             <div class="contact-layout">
                 
-                <!-- Google Map Section -->
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <div class="map-wrapper">
-                        <!-- Direct Map Embed using the Address -->
                         <iframe 
                             src="https://maps.google.com/maps?q=232/2b1b,%20Palladam%20Main%20Road,%20Kunangalpalayam%20Pirivu,%20Karaipudur,%20Palladam,%20Tiruppur%20-%20641605&t=&z=15&ie=UTF8&iwloc=&output=embed" 
                             width="100%" 
@@ -580,20 +619,17 @@
                             loading="lazy">
                         </iframe>
                     </div>
-                    <!-- Tap/Long Press targets exact shared map link -->
                     <a class="directions-btn" href="https://share.google/lW2diSvbH0UQ4JvCH" target="_blank">
                         📍 Open in Google Maps / Get Directions
                     </a>
                 </div>
 
-                <!-- Contact & Unit Addresses -->
                 <div class="info-panel">
-                    
                     <div class="info-item">
                         <div class="info-icon">👤</div>
                         <div class="info-text">
                             <h4>Primary Contact</h4>
-                            <p><strong>Joseph Muthaiyan</strong> (Managing Partner)</p>
+                            <p><strong>Joseph Muthaiyan</strong> (Managing Director)</p>
                             <p>Phone: <a href="tel:+919894813801">+91-98948 13801</a></p>
                             <p>Email: <a href="mailto:joseph@saisenaimpex.in">joseph@saisenaimpex.in</a></p>
                         </div>
@@ -602,7 +638,7 @@
                     <div class="info-item">
                         <div class="info-icon">📍</div>
                         <div class="info-text">
-                            <h4>Unit - 2 Address</h4>
+                            <h4>Located Address</h4>
                             <p>232/2b1b, Palladam Main Road,</p>
                             <p>Kunangalpalayam Pirivu, Karaipudur,</p>
                             <p>Palladam, Tiruppur - 641605, Tamil Nadu, India</p>
@@ -616,20 +652,22 @@
                             <p><a href="http://www.saisenaimpex.in" target="_blank">www.saisenaimpex.in</a></p>
                         </div>
                     </div>
-
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div style="max-width: 1200px; margin: 0 auto;">
             <h3>SAI SENA IMPEX PVT LTD</h3>
-            <p>&copy; 2026 Sai Sena Impex Pvt Ltd. All Rights Reserved.</p>
+            <p>© 2026 Sai Sena Impex Pvt Ltd. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <!-- Load the external scripts -->
+    <script src="brand.js"></script>
+    <script type="text/babel" src="products.js"></script>
 
 </body>
 </html>

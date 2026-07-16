@@ -1,0 +1,841 @@
+// 1. Extract hooks from the globally loaded React object
+const { useState, useMemo } = React;
+
+// 2. Define the Products Array with relative string paths for images
+const PRODUCTS = [
+	{
+		id: 'P-3001',
+		sku: 'SK-GT-3001',
+		name: 'Graphic Tee',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-graphic-tee1.png',
+		tags: ['tee', 'graphic', 'casual'],
+		description: 'Trendy graphic tee for everyday style.',
+	},
+	{
+		id: 'P-3002',
+		sku: 'SK-JG-3002',
+		name: 'Joggers',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-joggers1.png',
+		tags: ['joggers', 'pants', 'casual'],
+		description: 'Comfortable joggers for active wear.',
+	},
+	{
+		id: 'P-4001',
+		sku: 'SK-KS-4001',
+		name: 'Kids Set 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set1.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Fun and colorful kids clothing set.',
+	},
+	{
+		id: 'P-4002',
+		sku: 'SK-KS-4002',
+		name: 'Kids Set 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set2.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Stylish kids set for all occasions.',
+	},
+	{
+		id: 'P-4003',
+		sku: 'SK-KS-4003',
+		name: 'Kids Set 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set3.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Comfortable kids set made for everyday wear.',
+	},
+	{
+		id: 'P-4004',
+		sku: 'SK-KS-4004',
+		name: 'Kids Set 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set4.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Playful kids set with a relaxed fit.',
+	},
+	{
+		id: 'P-4011',
+		sku: 'SK-KS-4011',
+		name: 'Kids Set 1 Copy',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set1 copy.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Alternate kids set design for casual use.',
+	},
+	{
+		id: 'P-4012',
+		sku: 'SK-KS-4012',
+		name: 'Kids Set 2 Copy',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-set2 copy.png',
+		tags: ['kids', 'set', 'outfit'],
+		description: 'Additional kids set style for daily comfort.',
+	},
+	{
+		id: 'P-4013',
+		sku: 'SK-KP-4013',
+		name: 'Kids Pack',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-kids-pack.png',
+		tags: ['kids', 'pack', 'outfit'],
+		description: 'Kids combo pack suitable for regular wear.',
+	},
+	{
+		id: 'P-5001',
+		sku: 'SK-RP-5001',
+		name: 'Romper',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Soft and comfy romper for babies.',
+	},
+	{
+		id: 'P-5002',
+		sku: 'SK-RP-5002',
+		name: 'Romper 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper2.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Adorable romper with playful design.',
+	},
+	{
+		id: 'P-5003',
+		sku: 'SK-RP-5003',
+		name: 'Romper 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper3.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Classic romper for everyday comfort.',
+	},
+	{
+		id: 'P-5004',
+		sku: 'SK-RP-5004',
+		name: 'Romper 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper4.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Romper with unique patterns.',
+	},
+	{
+		id: 'P-5005',
+		sku: 'SK-RP-5005',
+		name: 'Romper 5',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper5.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Soft romper designed for everyday comfort.',
+	},
+	{
+		id: 'P-5008',
+		sku: 'SK-RP-5008',
+		name: 'Romper 8',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper8.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Lightweight romper with a clean everyday style.',
+	},
+	{
+		id: 'P-5009',
+		sku: 'SK-RP-5009',
+		name: 'Romper 9',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-romper9.png',
+		tags: ['romper', 'baby', 'one-piece'],
+		description: 'Comfort-first romper made for daily wear.',
+	},
+	{
+		id: 'P-5101',
+		sku: 'SK-JS-5101',
+		name: 'Jumpsuit 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-jumpsuit1.png',
+		tags: ['jumpsuit', 'one-piece', 'casual'],
+		description: 'Stylish jumpsuit offering all-day comfort.',
+	},
+	{
+		id: 'P-6001',
+		sku: 'SK-SW-6001',
+		name: 'Sweatshirt',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatshirts1.png',
+		tags: ['sweatshirt', 'warm', 'casual'],
+		description: 'Cozy sweatshirt for chilly days.',
+	},
+	{
+		id: 'P-7001',
+		sku: 'SK-WM-7001',
+		name: 'Women\'s Top 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-womens1.png',
+		tags: ['women', 'top', 'fashion'],
+		description: 'Elegant women\'s top for any occasion.',
+	},
+	{
+		id: 'P-7002',
+		sku: 'SK-WM-7002',
+		name: 'Women\'s Top 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-womens2.png',
+		tags: ['women', 'top', 'fashion'],
+		description: 'Stylish women\'s top with modern look.',
+	},
+	{
+		id: 'P-7101',
+		sku: 'SK-GD-7101',
+		name: 'Girls Dress 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress1.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Elegant girls dress for festive and casual use.',
+	},
+	{
+		id: 'P-7102',
+		sku: 'SK-GD-7102',
+		name: 'Girls Dress 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress2.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Comfortable girls dress with a modern cut.',
+	},
+	{
+		id: 'P-7103',
+		sku: 'SK-GD-7103',
+		name: 'Girls Dress 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress3.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Breathable girls dress made for daily wear.',
+	},
+	{
+		id: 'P-7104',
+		sku: 'SK-GD-7104',
+		name: 'Girls Dress 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress4.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Relaxed-fit girls dress with soft fabric.',
+	},
+	{
+		id: 'P-7105',
+		sku: 'SK-GD-7105',
+		name: 'Girls Dress 5',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress5.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Classic girls dress suitable for all occasions.',
+	},
+	{
+		id: 'P-7106',
+		sku: 'SK-GD-7106',
+		name: 'Girls Dress 6',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress6.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Stylish girls dress with lightweight comfort.',
+	},
+	{
+		id: 'P-7107',
+		sku: 'SK-GD-7107',
+		name: 'Girls Dress 7',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress7.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Everyday girls dress designed for movement.',
+	},
+	{
+		id: 'P-7108',
+		sku: 'SK-GD-7108',
+		name: 'Girls Dress 8',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-gdress8.png',
+		tags: ['girls', 'dress', 'fashion'],
+		description: 'Premium girls dress with a soft touch feel.',
+	},
+	{
+		id: 'P-8001',
+		sku: 'SK-BS-8001',
+		name: 'Bodysuit 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-bodysuit1.png',
+		tags: ['bodysuit', 'baby', 'one-piece'],
+		description: 'Comfortable bodysuit for babies.',
+	},
+	{
+		id: 'P-8002',
+		sku: 'SK-BS-8002',
+		name: 'Bodysuit 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-bodysuit2.png',
+		tags: ['bodysuit', 'baby', 'one-piece'],
+		description: 'Soft bodysuit with cute prints.',
+	},
+	{
+		id: 'P-8003',
+		sku: 'SK-BS-8003',
+		name: 'Bodysuit 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-bodysuit3.png',
+		tags: ['bodysuit', 'baby', 'one-piece'],
+		description: 'Essential bodysuit for daily wear.',
+	},
+	{
+		id: 'P-8101',
+		sku: 'SK-TS-8101',
+		name: 'T-Shirt 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt1.png',
+		tags: ['tshirt', 'casual', 'top'],
+		description: 'Classic t-shirt for everyday comfort.',
+	},
+	{
+		id: 'P-8102',
+		sku: 'SK-TS-8102',
+		name: 'T-Shirt 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt2.png',
+		tags: ['tshirt', 'casual', 'top'],
+		description: 'Soft t-shirt with a modern fit.',
+	},
+	{
+		id: 'P-8103',
+		sku: 'SK-TS-8103',
+		name: 'T-Shirt 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt3.png',
+		tags: ['tshirt', 'casual', 'top'],
+		description: 'Versatile t-shirt suitable for daily wear.',
+	},
+	{
+		id: 'P-8104',
+		sku: 'SK-TS-8104',
+		name: 'T-Shirt 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt4.png',
+		tags: ['tshirt', 'casual', 'top'],
+		description: 'Everyday t-shirt with a comfortable fit.',
+	},
+	{
+		id: 'P-8106',
+		sku: 'SK-TS-8106',
+		name: 'T-Shirt 5',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt5.png',
+		tags: ['tshirt', 'casual', 'top'],
+		description: 'Breathable t-shirt designed for regular wear.',
+	},
+	{
+		id: 'P-8107',
+		sku: 'SK-TS-8107',
+		name: 'Kids T-Shirt 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-tshirt-kids1.png',
+		tags: ['kids', 'tshirt', 'casual'],
+		description: 'Kids t-shirt with breathable everyday comfort.',
+	},
+	{
+		id: 'P-8201',
+		sku: 'SK-HD-8201',
+		name: 'Hoodie 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-hoodie1.png',
+		tags: ['hoodie', 'warm', 'casual'],
+		description: 'Comfortable hoodie for cool-weather layering.',
+	},
+	{
+		id: 'P-8202',
+		sku: 'SK-HD-8202',
+		name: 'Hoodie 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-hoodie2.png',
+		tags: ['hoodie', 'warm', 'casual'],
+		description: 'Stylish hoodie built for comfort and movement.',
+	},
+	{
+		id: 'P-8203',
+		sku: 'SK-SL-8203',
+		name: 'Sleeveless Top',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sl1.png',
+		tags: ['sleeveless', 'top', 'casual'],
+		description: 'Lightweight sleeveless top for warm days.',
+	},
+	{
+		id: 'P-8206',
+		sku: 'SK-SL-8206',
+		name: 'Sleeveless Top 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sl2.png',
+		tags: ['sleeveless', 'top', 'casual'],
+		description: 'Relaxed sleeveless style for everyday comfort.',
+	},
+	{
+		id: 'P-8207',
+		sku: 'SK-SL-8207',
+		name: 'Sleeveless Top 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sl3.png',
+		tags: ['sleeveless', 'top', 'casual'],
+		description: 'Breathable sleeveless top for warm-weather wear.',
+	},
+	{
+		id: 'P-8204',
+		sku: 'SK-HD-8204',
+		name: 'Hoodie 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-hoodie3.png',
+		tags: ['hoodie', 'warm', 'casual'],
+		description: 'Relaxed-fit hoodie for all-day comfort.',
+	},
+	{
+		id: 'P-8205',
+		sku: 'SK-HD-8205',
+		name: 'Hoodie 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-hoodie4.png',
+		tags: ['hoodie', 'warm', 'casual'],
+		description: 'Premium hoodie with a soft finish.',
+	},
+	{
+		id: 'P-8301',
+		sku: 'SK-SW-8301',
+		name: 'Sweatshirt 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatshirt2.png',
+		tags: ['sweatshirt', 'warm', 'casual'],
+		description: 'Cozy sweatshirt with a clean look.',
+	},
+	{
+		id: 'P-8302',
+		sku: 'SK-SW-8302',
+		name: 'Sweatshirt 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatshirt3.png',
+		tags: ['sweatshirt', 'warm', 'casual'],
+		description: 'Comfort-first sweatshirt for regular wear.',
+	},
+	{
+		id: 'P-8303',
+		sku: 'SK-SW-8303',
+		name: 'Sweatshirt 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdtsweatshirt4.png',
+		tags: ['sweatshirt', 'warm', 'casual'],
+		description: 'Everyday sweatshirt with durable stitching.',
+	},
+	{
+		id: 'P-8401',
+		sku: 'SK-SP-8401',
+		name: 'Sweatpants 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatpant.png',
+		tags: ['sweatpants', 'bottoms', 'casual'],
+		description: 'Comfortable sweatpants for lounging and travel.',
+	},
+	{
+		id: 'P-8402',
+		sku: 'SK-SP-8402',
+		name: 'Sweatpants 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatpant2.png',
+		tags: ['sweatpants', 'bottoms', 'casual'],
+		description: 'Tapered sweatpants built for all-day comfort.',
+	},
+	{
+		id: 'P-8403',
+		sku: 'SK-SP-8403',
+		name: 'Sweatpants 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-sweatpant3.png',
+		tags: ['sweatpants', 'bottoms', 'casual'],
+		description: 'Soft sweatpants with a relaxed fit.',
+	},
+	{
+		id: 'P-8501',
+		sku: 'SK-SH-8501',
+		name: 'Shorts 1',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts1.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Comfortable shorts for casual everyday wear.',
+	},
+	{
+		id: 'P-8502',
+		sku: 'SK-SH-8502',
+		name: 'Shorts 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts2.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Lightweight shorts made for warm-weather comfort.',
+	},
+	{
+		id: 'P-8503',
+		sku: 'SK-SH-8503',
+		name: 'Shorts 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts3.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Everyday shorts with a flexible fit.',
+	},
+	{
+		id: 'P-8504',
+		sku: 'SK-SH-8504',
+		name: 'Shorts 4',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts4.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Durable shorts for active daily use.',
+	},
+	{
+		id: 'P-8505',
+		sku: 'SK-SH-8505',
+		name: 'Shorts 5',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts5.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Flexible shorts built for everyday movement.',
+	},
+	{
+		id: 'P-8506',
+		sku: 'SK-SH-8506',
+		name: 'Shorts 6',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts6.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Comfortable shorts for regular casual wear.',
+	},
+	{
+		id: 'P-8507',
+		sku: 'SK-SH-8507',
+		name: 'Shorts 7',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts7.png',
+		tags: ['shorts', 'bottoms', 'casual'],
+		description: 'Soft and durable shorts with an easy fit.',
+	},
+	{
+		id: 'P-8508',
+		sku: 'SK-SH-8508',
+		name: 'Shorts Combo',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-shorts-combo.png',
+		tags: ['shorts', 'combo', 'casual'],
+		description: 'Multipack shorts combo for everyday rotation.',
+	},
+	{
+		id: 'P-8601',
+		sku: 'SK-PK-8601',
+		name: 'Kids Pyjama',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-pyjama-kids.png',
+		tags: ['pyjama', 'kids', 'nightwear'],
+		description: 'Soft kids pyjama set for cozy bedtime comfort.',
+	},
+	{
+		id: 'P-3003',
+		sku: 'SK-JG-3003',
+		name: 'Joggers 2',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-jogger2.png',
+		tags: ['joggers', 'pants', 'casual'],
+		description: 'Athleisure joggers designed for daily movement.',
+	},
+	{
+		id: 'P-3004',
+		sku: 'SK-JG-3004',
+		name: 'Joggers 3',
+		factory: 'Apparels',
+		price: 9.99,
+		image: './assets/pdt-joggers3.png',
+		tags: ['joggers', 'pants', 'casual'],
+		description: 'Durable joggers offering comfort and flexibility.',
+	},
+	{
+		id: 'P-9001',
+		sku: 'SK-AS-9001',
+		name: 'Arc Suit',
+		factory: 'Work Wear',
+		price: 9.99,
+		image: './assets/pdt-arcsuit.png',
+		tags: ['arc', 'suit', 'protective'],
+		description: 'Protective arc suit for safety.',
+	},
+	{
+		id: 'P-9002',
+		sku: 'SK-FS-9002',
+		name: 'FRC Suit',
+		factory: 'Work Wear',
+		price: 9.99,
+		image: './assets/pdt-frc-suit.png',
+		tags: ['frc', 'suit', 'protective'],
+		description: 'Flame-resistant suit for hazardous work.',
+	},
+	{
+		id: 'P-9012',
+		sku: 'SK-FR-9012',
+		name: 'FRC Garment',
+		factory: 'Work Wear',
+		price: 9.99,
+		image: './assets/pdt-frc.png',
+		tags: ['frc', 'protective', 'workwear'],
+		description: 'Protective FRC garment built for industrial safety.',
+	},
+	{
+		id: 'P-9003',
+		sku: 'SK-FC-9003',
+		name: 'FRC Coverall',
+		factory: 'Work Wear',
+		price: 9.99,
+		image: './assets/pdt-frc-coverall.png',
+		tags: ['frc', 'coverall', 'protective'],
+		description: 'Durable coverall for industrial use.',
+	},
+	{
+		id: 'P-9004',
+		sku: 'SK-MS-9004',
+		name: 'Medical Scrubs',
+		factory: 'Work Wear',
+		price: 9.99,
+		image: './assets/pdt-medical-scrubs2.png',
+		tags: ['medical', 'scrubs', 'healthcare'],
+		description: 'Comfortable medical scrubs for professionals.',
+	},
+	{
+		id: 'P-9013',
+		sku: 'SK-MS-9013',
+		name: 'Medical Scrubs 2',
+		factory: 'Work wear',
+		price: 9.99,
+		image: './assets/pdt-medicalscrubs.png',
+		tags: ['medical', 'scrubs', 'healthcare'],
+		description: 'Alternate scrub style with soft all-day comfort.',
+	},
+	{
+		id: 'P-9005',
+		sku: 'SK-UP-9005',
+		name: 'Uniform Polos',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-uniform-polos.png',
+		tags: ['uniform', 'polos', 'workwear'],
+		description: 'Classic uniform polos for staff.',
+	},
+	{
+		id: 'P-9006',
+		sku: 'SK-WS-9006',
+		name: 'Shirts & Trousers',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-shirt.png',
+		tags: ['shirt', 'woven', 'workwear'],
+		description: 'Versatile woven shirt for daily work and wear.',
+	},
+	{
+		id: 'P-9007',
+		sku: 'SK-BX-9007',
+		name: 'Boxer Shorts',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-boxer-shorts.jpg',
+		tags: ['boxer', 'shorts', 'innerwear'],
+		description: 'Comfortable boxer shorts made for all-day wear.',
+	},
+	{
+		id: 'P-9008',
+		sku: 'SK-PJ-9008',
+		name: 'Pyjama 1',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-pyjama1.png',
+		tags: ['pyjama', 'woven', 'nightwear'],
+		description: 'Comfortable woven pyjama set for daily use.',
+	},
+	{
+		id: 'P-9009',
+		sku: 'SK-PJ-9009',
+		name: 'Pyjama 2',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-pyjama2.png',
+		tags: ['pyjama', 'woven', 'nightwear'],
+		description: 'Soft woven pyjama set with breathable fabric.',
+	},
+	{
+		id: 'P-9010',
+		sku: 'SK-PS-9010',
+		name: 'Printed Shirt 1',
+		factory: 'Woven Garments',
+		price: 9.99,
+		image: './assets/pdt-printed-shirt1.png',
+		tags: ['shirt', 'printed', 'woven'],
+		description: 'Printed woven shirt crafted for smart-casual wear.',
+	},
+];
+
+const FACTORIES = ['All', 'Apparels', 'Woven Garments', 'Work Wear'];
+
+// 3. Define the ProductCard Component locally
+function ProductCard({ product }) {
+	return (
+		<div className="product-card">
+			<div className="product-img" style={{ backgroundImage: `url(${product.image})` }}></div>
+			<div className="product-info">
+				<h3>{product.name}</h3>
+				<p>{product.description}</p>
+			</div>
+		</div>
+	);
+}
+
+// 4. The main Products Component
+function Products() {
+	const [query, setQuery] = useState('');
+	const [factory, setFactory] = useState('All');
+
+	const filtered = useMemo(() => {
+		const q = query.trim().toLowerCase();
+		return PRODUCTS.filter((p) => {
+			const matchesFactory = factory === 'All' || p.factory === factory;
+			const matchesQuery =
+				!q ||
+				p.name.toLowerCase().includes(q) ||
+				p.sku.toLowerCase().includes(q) ||
+				p.id.toLowerCase().includes(q) ||
+				p.tags?.some((t) => t.toLowerCase().includes(q));
+			return matchesFactory && matchesQuery;
+		});
+	}, [query, factory]);
+
+	return (
+		<div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+			<div style={{ textAlign: 'center', marginBottom: '30px' }}>
+				<input
+					type="search"
+					placeholder="Search by name, SKU, tag..."
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					style={{
+						padding: '12px 20px',
+						width: '100%',
+						maxWidth: '400px',
+						borderRadius: '30px',
+						border: '1px solid #ccc',
+						fontSize: '1rem',
+						marginBottom: '20px'
+					}}
+					aria-label="Search products"
+				/>
+				
+				<div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
+					{FACTORIES.map((f) => (
+						<button
+							key={f}
+							onClick={() => setFactory(f)}
+							style={{
+								padding: '8px 20px',
+								borderRadius: '20px',
+								border: 'none',
+								cursor: 'pointer',
+								fontWeight: '600',
+								backgroundColor: factory === f ? '#0b3c5d' : '#e0e0e0',
+								color: factory === f ? '#ffffff' : '#333333',
+								transition: 'all 0.3s'
+							}}
+						>
+							{f}
+						</button>
+					))}
+				</div>
+			</div>
+
+			<div className="products-grid" style={{
+				display: 'grid',
+				gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+				gap: '30px'
+			}}>
+				{filtered.map((p) => (
+					<ProductCard
+						key={p.id}
+						product={p}
+					/>
+				))}
+			</div>
+
+			{filtered.length === 0 && (
+				<div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+					<p>No products match your search.</p>
+				</div>
+			)}
+		</div>
+	);
+}
+
+// 5. Mount the React Application to the DOM
+const rootElement = document.getElementById('react-products-root');
+if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<Products />);
+}
