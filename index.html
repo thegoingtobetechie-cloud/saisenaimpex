@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sai Sena Impex Pvt Ltd - Leading Apparel Manufacturer</title>
-    
+    <!-- Import Google Fonts: Outfit for Headings, Inter for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Load React, ReactDOM, and Babel for in-browser JSX parsing -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -26,7 +30,11 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
@@ -132,6 +140,78 @@
             background-color: var(--secondary-color);
             margin: 15px auto 0 auto;
             border-radius: 2px;
+        }
+
+        /* MD Note Section */
+        .md-note-card {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(11, 60, 93, 0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 6px solid var(--secondary-color);
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+
+        .md-note-card::before {
+            content: "“";
+            font-family: 'Outfit', sans-serif;
+            font-size: 15rem;
+            color: rgba(50, 140, 193, 0.05);
+            position: absolute;
+            top: -60px;
+            left: 20px;
+            line-height: 1;
+        }
+
+        .md-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f9f9f9;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .md-content {
+            z-index: 1;
+        }
+
+        .md-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .md-role {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            display: block;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .md-quote {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .md-note-card {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         /* About Section */
@@ -500,6 +580,20 @@
                 <p>Our infrastructure is engineered to deliver unmatched efficiency, outstanding product quality, and strict adherence to global supply chain safety standards. With our expert craftsmanship and modern manufacturing methodologies, we deliver apparel that sets industry benchmarks.</p>
             </div>
             <div style="border-radius: 8px; overflow: hidden; height: 300px; background: url('./assets/Office.jpeg') center/cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- MD Note Section -->
+    <section id="md-note" class="section-container" style="padding-top: 0;">
+        <div class="md-note-card">
+            <img class="md-image" src="./assets/photomd.jpeg" alt="Joseph Muthaiyan - Managing Director">
+            <div class="md-content">
+                <h3>Joseph Muthaiyan</h3>
+                <span class="md-role">Managing Director</span>
+                <p class="md-quote">
+                    "At Sai Sena Impex, our foundation is built upon an unwavering commitment to unparalleled quality and environmental stewardship. We believe that true excellence in apparel manufacturing goes beyond the garment itself—it encompasses the welfare of our people and the protection of our planet. Our mission is to continue innovating sustainable practices while delivering world-class textiles that set global benchmarks."
+                </p>
             </div>
         </div>
     </section>
