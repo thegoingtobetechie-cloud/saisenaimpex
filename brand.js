@@ -1,12 +1,11 @@
 // Add your exact logo URLs and brand names here
 const BRANDS = [
-    { name: "Brand 1", logo: "./assets/brand1.png" },
-    { name: "Brand 2", logo: "./assets/brand2.png" },
-    { name: "Brand 3", logo: "./assets/brand3.png" },
-    { name: "Brand 4", logo: "./assets/brand4.png" },
-    { name: "Brand 5", logo: "./assets/brand5.png" },
-    { name: "Brand 6", logo: "./assets/brand6.png" },
-    { name: "Brand 7", logo: "./assets/brand7.png" },
+    { name: "Brand 1", logo: "./assets/urbanmonkey.png" },
+    { name: "Brand 2", logo: "./assets/beinghuman.png" },
+    { name: "Brand 3", logo: "./assets/sistersandseekers.png" },
+    { name: "Brand 4", logo: "./assets/reasn.png" },
+    { name: "Brand 5", logo: "./assets/planb.png" },
+    { name: "Brand 6", logo: "./assets/navira.png" },
     // Add as many brands as you need
 ];
 
