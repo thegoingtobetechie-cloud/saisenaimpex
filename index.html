@@ -541,6 +541,66 @@
                 justify-content: center;
             }
         }
+
+        /* Stats Section */
+        .stats-section {
+            background-color: #6c7a89;
+            color: #ffffff;
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            overflow: hidden;
+            margin-top: -5px; /* Pulls it flush if there's any gap */
+        }
+
+        .stats-image {
+            flex: 0 0 25%;
+            background: url('https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=600&q=80') center/cover;
+            min-height: 150px;
+        }
+
+        .stats-container {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .stats-section {
+                flex-direction: column;
+            }
+            .stats-image {
+                height: 200px;
+                flex: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -570,6 +630,64 @@
             <p>Leading Manufacturer & Exporter of High-Quality Apparel and Textile Garments</p>
         </div>
     </section>
+
+    <!-- Key Metrics / Stats Section -->
+    <section class="stats-section">
+        <div class="stats-image"></div>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number"><span class="count-up" data-target="6">0</span>M</div>
+                <div class="stat-label">Garments Per Year</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number"><span class="count-up" data-target="500">0</span>+</div>
+                <div class="stat-label">Workstations</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number"><span class="count-up" data-target="530">0</span>+</div>
+                <div class="stat-label">Skilled Professionals</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number"><span class="count-up" data-target="8">0</span>+</div>
+                <div class="stat-label">Countries Served</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.count-up');
+            const speed = 50; 
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        counters.forEach(counter => {
+                            const updateCount = () => {
+                                const target = +counter.getAttribute('data-target');
+                                const count = +counter.innerText;
+                                const inc = target / speed;
+
+                                if (count < target) {
+                                    counter.innerText = Math.ceil(count + inc);
+                                    setTimeout(updateCount, 40);
+                                } else {
+                                    counter.innerText = target;
+                                }
+                            };
+                            updateCount();
+                        });
+                        observer.disconnect(); 
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
+    </script>
 
     <!-- About Us -->
     <section id="about" class="section-container">
