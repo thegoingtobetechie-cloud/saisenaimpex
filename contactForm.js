@@ -2,7 +2,7 @@ const ContactForm = () => {
     return (
         <div className="contact-form-container">
             <h3>Send Us a Note</h3>
-            <form action="mailto:joseph@saisenaimpex.in" method="post" encType="text/plain">
+            <form action="https://formsubmit.co/joseph@saisenaimpex.in" method="POST">
                 <div className="form-group">
                     <input type="text" name="Name" className="form-control" placeholder="Name" required />
                 </div>
