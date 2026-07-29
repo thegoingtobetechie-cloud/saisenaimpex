@@ -15,7 +15,7 @@ const App = () => {
             </section>
 
             <Brands />
-            <Certs />
+            {/* <Certs /> */}
             <Contact />
             <Footer />
         </div>
