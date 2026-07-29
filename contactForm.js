@@ -78,6 +78,7 @@ const ContactForm = () => {
             <h3>Send Us a Note</h3>
             <form ref={formRef} onSubmit={handleSubmit}>
                 {/* FormSubmit Configuration Fields */}
+                <input type="text" name="_honey" style={{ display: 'none' }} />
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_subject" value="New message from Sai Sena Impex website!" />
 
