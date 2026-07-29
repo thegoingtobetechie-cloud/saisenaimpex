@@ -813,9 +813,4 @@ function Products() {
 	);
 }
 
-// 5. Mount the React Application to the DOM
-const rootElement = document.getElementById('react-products-root');
-if (rootElement) {
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(<Products />);
-}
+// Component exported globally in browser
